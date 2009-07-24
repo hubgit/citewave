@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import logging
+
 from waveapi import events
 from waveapi import model
 from waveapi import robot
@@ -14,16 +16,24 @@ def OnBlipSubmitted(properties, context):
   root_wavelet = context.GetRootWavelet()
   blip = context.GetBlipById(properties['blipId']) 
   # root_wavelet.GetRootBlipId()
+  
+  logging.debug('BlipID: ' + properties['blipId'])
+  
   if not blip.IsRoot():
     return 0
     
   document = blip.GetDocument()
   text = document.GetText()
   
+  logging.debug('Text: ' + text)
+
+  
   elements = blip.GetElements()
   annotations = blip.GetAnnotations()
 
 if __name__ == '__main__':
+  logging.getLogger().setLevel(logging.DEBUG)
+
   myRobot = robot.Robot('citewave', 
       #image_url='http://citewave.appspot.com/icon.png',
       version='2',
